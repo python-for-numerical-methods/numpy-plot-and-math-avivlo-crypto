@@ -1,0 +1,29 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: שיעור 2
+      id: '2'
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: שיעור 2
+        setup-command: pip install numpy pytest
+        command: pytest test_exercise.py
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        2_RESULTS: "${{steps.2.outputs.result}}"
+      with:
+        runners: '2'
