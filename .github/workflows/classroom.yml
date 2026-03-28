@@ -14,7 +14,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: שיעור 2
-      id: '2'
+      id: step2
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: שיעור 2
@@ -24,6 +24,6 @@ jobs:
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        2_RESULTS: "${{steps.2.outputs.result}}"
+        2_RESULTS: "${{ steps.step2.outputs.result }}"
       with:
         runners: '2'
