@@ -13,17 +13,47 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: lesson_2
-      id: lesson_2
-      uses: classroom-resources/autograding-command-grader@v1
+    - name: basic_test
+      id: basic_test
+      uses: classroom-resources/autograding-io-grader@v1
       with:
-        test-name: lesson_2
-        setup-command: pip install numpy pytest
-        command: pytest test_exercise.py
+        test-name: basic_test
+        setup-command: ''
+        command: python factors.py
+        input: "[10, 20, 30]"
+        expected-output: np.array([0.0, 0.5, 1.0])
+        comparison-method: exact
         timeout: 10
+        max-score: 40
+    - name: test_all_same_values
+      id: test_all_same_values
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_all_same_values
+        setup-command: ''
+        command: python factors.py
+        input: "[5, 5, 5]"
+        expected-output: np.array([0.0, 0.0, 0.0])
+        comparison-method: exact
+        timeout: 10
+        max-score: 30
+    - name: test_negative_values
+      id: test_negative_values
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: test_negative_values
+        setup-command: ''
+        command: python factors.py
+        input: "[-10, 0, 10]"
+        expected-output: np.array([0.0, 0.5, 1.0])
+        comparison-method: exact
+        timeout: 10
+        max-score: 30
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        LESSON_2_RESULTS: "${{steps.lesson_2.outputs.result}}"
+        BASIC_TEST_RESULTS: "${{steps.basic_test.outputs.result}}"
+        TEST_ALL_SAME_VALUES_RESULTS: "${{steps.test_all_same_values.outputs.result}}"
+        TEST_NEGATIVE_VALUES_RESULTS: "${{steps.test_negative_values.outputs.result}}"
       with:
-        runners: lesson_2
+        runners: basic_test,test_all_same_values,test_negative_values
