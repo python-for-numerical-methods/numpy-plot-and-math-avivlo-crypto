@@ -13,17 +13,17 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: שיעור 2
-      id: '2'
+    - name: lesson_2
+      id: lesson_2
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: שיעור 2
+        test-name: lesson_2
         setup-command: pip install numpy pytest
         command: pytest test_exercise.py
         timeout: 10
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        2_RESULTS: "${{steps.2.outputs.result}}"
+        LESSON_2_RESULTS: "${{steps.lesson_2.outputs.result}}"
       with:
-        runners: '2'
+        runners: lesson_2
